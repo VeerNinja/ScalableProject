@@ -24,12 +24,12 @@ jobs:
         distribution: 'temurin'
 
     - name: Build Order Service
-      working-directory: ./scalableproject/order-service
-      run: mvn -B clean package
+      working-directory: ./order-service
+      run: mvn clean package
 
     - name: Build User Service
-      working-directory: ./scalableproject/user-service
-      run: mvn -B clean package
+      working-directory: ./user-service
+      run: mvn clean package
 
 
     - name: Log in to Docker Hub
@@ -40,18 +40,15 @@ jobs:
 
     - name: Build and Push Docker Images
       run: |
-        docker build -t your-dockerhub-username/order-service:latest ./order-service
-        docker push your-dockerhub-username/order-service:latest
-        docker build -t your-dockerhub-username/user-service:latest ./user-service
-        docker push your-dockerhub-username/user-service:latest
+        docker build -t 2024mt03108/order-service:latest ./order-service
+        docker push 2024mt03108/order-service:latest
+        docker build -t 2024mt03108/user-service:latest ./user-service
+        docker push 2024mt03108/user-service:latest
 
     - name: Set up kubectl
       uses: azure/setup-kubectl@v3
       with:
         version: '1.27.3'
-
-    - name: Configure Kubeconfig
-      run: echo "${{ secrets.KUBECONFIG_CONTENT }}" > $HOME/.kube/config
 
     - name: Deploy to Kubernetes
       run: |
