@@ -18,6 +18,13 @@ spec:
           imagePullPolicy: {{ .Values.userService.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.userService.port }}
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
           env:
             - name: SPRING_DATASOURCE_URL
               value: jdbc:mysql://scalableproject-mysql:3306/user_service?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
