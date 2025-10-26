@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scalableproject-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scalableproject-mysql
+  template:
+    metadata:
+      labels:
+        app: scalableproject-mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8.0
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mysql-init-db
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: mysql-init-db
+          configMap:
+            name: mysql-init-scripts

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "scalableproject.fullname" . }}-test-connection"
+  labels:
+    {{- include "scalableproject.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget-user
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "scalableproject.fullname" . }}-user:{{ .Values.userService.port | default 8081 }}']
+
+    - name: wget-order
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "scalableproject.fullname" . }}-order:{{ .Values.orderService.port | default 8082 }}']
+  restartPolicy: Never

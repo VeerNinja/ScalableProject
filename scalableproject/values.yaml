@@ -1,0 +1,69 @@
+# MySQL Configuration
+mysql:
+  enabled: true
+  image: mysql:8.0
+  rootPassword: root
+  databases:
+    - user_service
+    - order_service
+  service:
+    type: ClusterIP
+    port: 3306
+
+# User Service
+userService:
+  image:
+    repository: 2024mt03108/user-service
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  port: 8081
+
+# Order Service
+orderService:
+  image:
+    repository: 2024mt03108/order-service
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  port: 8082
+
+# Service Account for Helm Chart
+serviceAccount:
+  create: true   # Helm will create a service account
+  name: ""       # Leave empty to use default fullname template
+
+# Optional: Chart-wide service type if needed
+service:
+  type: ClusterIP
+  port: 80   # default cluster port for external access if needed
+
+# Ingress configuration
+ingress:
+  enabled: true
+  className: "nginx"                  # if using NGINX ingress controller
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  hosts:
+    - host: "user.local"              # hostname for User Service
+      paths:
+        - path: "/"                   # path to route
+          pathType: Prefix
+    - host: "order.local"             # hostname for Order Service
+      paths:
+        - path: "/"                   
+          pathType: Prefix
+  tls: []                              # leave empty if no TLS certificates yet
+
+httpRoute:
+  enabled: false
+  parentRefs: []
+
+# Autoscaling configuration
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+
+image:
+  repository: ""  # empty
+  tag: ""         # empty
