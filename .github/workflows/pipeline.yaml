@@ -24,11 +24,11 @@ jobs:
         distribution: 'temurin'
 
     - name: Build Order Service
-      working-directory: ./order-service
+      working-directory: order-service
       run: mvn clean package
 
     - name: Build User Service
-      working-directory: ./user-service
+      working-directory: user-service
       run: mvn clean package
 
 
