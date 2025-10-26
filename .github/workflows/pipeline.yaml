@@ -22,13 +22,16 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-
+        
+    - name: Check directory structure
+      run: ls -R
+      
     - name: Build Order Service
-      working-directory: order-service
+      working-directory: ./scalableproject/order-service
       run: mvn clean package
 
     - name: Build User Service
-      working-directory: user-service
+      working-directory: ./scalableproject/user-service
       run: mvn clean package
 
 
